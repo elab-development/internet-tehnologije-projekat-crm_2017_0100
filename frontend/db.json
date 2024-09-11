@@ -1,0 +1,52 @@
+{
+  "leads": [
+    {
+      "text": "Ivana Antic lead",
+      "info": "owner of Ivana medical acadamy, dentist",
+      "checkLead": true,
+      "id": 5
+    },
+    {
+      "text": "Mateja Denic Lead",
+      "info": "company name BitchHouse",
+      "checkLead": true,
+      "id": 3
+    },
+    {
+      "text": "Milan Jovanovic Lead",
+      "info": "CEO of Jovanovic Tech, software engineer",
+      "checkLead": true,
+      "id": 7
+    },
+    {
+      "text": "Ana Petrovic Lead",
+      "info": "Founder of Petrovic Legal, attorney",
+      "checkLead": true,
+      "id": 8
+    },
+    {
+      "text": "Marko Markovic Lead",
+      "info": "Owner of Markovic Consulting, business strategist",
+      "checkLead": true,
+      "id": 9
+    },
+    {
+      "text": "Jelena Nikolic Lead",
+      "info": "Head of HR at Nikolic Enterprises",
+      "checkLead": true,
+      "id": 10
+    },
+    {
+      "text": "Nikola Tesla Lead",
+      "info": "Founder of Tesla Innovations, inventor",
+      "checkLead": true,
+      "id": 11
+    },
+    {
+      "text": "Aleksandra Antic Lead",
+      "info": "asfknaejknfjkaenfkjaenfkjaenfkjae",
+      "checkLead": true,
+      "id": 17
+    }
+  ]
+}

@@ -9,7 +9,7 @@ const AddContactLeadComponent = ({ onAdd }) => {
     e.preventDefault()
 
     if (!text) {
-        alert('Please add a task')
+        alert('Please add a contact')
         return
     }
 

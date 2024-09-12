@@ -10,13 +10,15 @@ return (
             onDoubleClick={() => onToggle(lead, lead.id)}
         >
             <h3>
-            {lead.text}{' '}
+            {lead.name}{' '}
             <FaTimes
                 style={{ color: 'red', cursor: 'pointer' }}
                 onClick={() => onDelete(lead, lead.id)}
             />
             </h3>
-            <p>{lead.info}</p>
+            <p>{lead.email}</p>
+            <p>{lead.phone}</p>
+            <p>{lead.company}</p>
         </div>
 </div>
 )

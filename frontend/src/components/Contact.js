@@ -8,13 +8,15 @@ const Contact = ({ lead, onDelete, onToggle }) => {
                 onDoubleClick={() => onToggle(lead, lead.id)}
             >
                 <h3>
-                {lead.text}{' '}
+                {lead.contact_name}{' '}
                 <FaTimes
                     style={{ color: 'red', cursor: 'pointer' }}
                     onClick={() => onDelete(lead, lead.id)}
                 />
                 </h3>
-                <p>{lead.info}</p>
+                <p>{lead.contact_email}</p>
+                <p>{lead.contact_phone}</p>
+                <p>{lead.position}</p>
             </div>
         </div>
     )

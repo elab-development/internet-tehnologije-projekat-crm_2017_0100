@@ -77,7 +77,6 @@ const App = () => {
 //Add Lead
 
   const AddLead = async (lead) => {
-    console.log(JSON.stringify(lead));
 
       const res = await fetch('http://localhost:8000/api/leads', {
         method: 'POST',
@@ -105,7 +104,6 @@ const App = () => {
 //Add Contact
 
   const AddContact = async (lead) => {
-    console.log(lead)
       const res = await fetch('http://localhost:8000/api/contacts', {
         method: 'POST',
         headers: {

@@ -2,22 +2,22 @@ import React from 'react'
 import { useState } from 'react'
 
 const ContactOnAdd = ({onAdd}) => {
-    const [leadId, setLeadId] = useState(1)
-    const [contactName, setContactName] = useState('')
-    const [contactEmail, setContactEmail] = useState('')
-    const [contactPhone, setContactPhone] = useState('')
+    const [lead_id, setLeadId] = useState(1)
+    const [contact_name, setContactName] = useState('')
+    const [contact_email, setContactEmail] = useState('')
+    const [contact_phone, setContactPhone] = useState('')
     const [position, setPosition] = useState('')
     const [notes, setNotes] = useState('')
 
     const onSubmit = (e) => {
     e.preventDefault()
 
-    if (!contactName) {
+    if (!contact_name) {
         alert('Please add a contact')
         return
     }
 
-    onAdd({leadId, contactName, contactEmail, contactPhone, position, notes })
+    onAdd({lead_id, contact_name, contact_email, contact_phone, position, notes })
     
 
     setContactName('')
@@ -35,7 +35,7 @@ return (
         <input
             type='number'
             placeholder='Add Lead ID'
-            value={leadId}
+            value={lead_id}
             onChange={(e) => setLeadId(e.target.value)}
         />
         </div>
@@ -44,7 +44,7 @@ return (
         <input
             type='text'
             placeholder='Add First and Last Name'
-            value={contactName}
+            value={contact_name}
             onChange={(e) => setContactName(e.target.value)}
         />
         </div>
@@ -53,7 +53,7 @@ return (
         <input
             type='text'
             placeholder='Add email'
-            value={contactEmail}
+            value={contact_email}
             onChange={(e) => setContactEmail(e.target.value)}
         />
         </div>
@@ -62,7 +62,7 @@ return (
         <input
             type='text'
             placeholder='Add a phone number'
-            value={contactPhone}
+            value={contact_phone}
             onChange={(e) => setContactPhone(e.target.value)}
         />
         </div>

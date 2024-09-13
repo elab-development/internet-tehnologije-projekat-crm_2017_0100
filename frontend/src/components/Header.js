@@ -3,20 +3,28 @@ import { useLocation } from 'react-router-dom'
 import Button from './Button'
 import Navbar from './Navbar'
 
-const Header = ({ title, onAdd, showAdd }) => {
+const Header = ({ title, onAddLead, onAddContact, showAddLead, showAddContact }) => {
     const location = useLocation()
 
     return (
     <header className='header'>
         <h1>GoLeads</h1>
         <Navbar />
-        {location.pathname === '/' && (
-        <Button
-            color={showAdd ? 'red' : 'green'}
-            text={showAdd ? 'Close' : 'Add Contact/Lead'}
-            onClick={onAdd}
+        {location.pathname === '/leads' && (
+            <Button
+            color={showAddLead ? 'red' : 'green'}
+            text={showAddLead ? 'Close' : 'Add Lead'}
+            onClick={onAddLead}
         />
         )}
+        {location.pathname === '/' && (
+        <Button
+            color={showAddContact ? 'red' : 'green'}
+            text={showAddContact ? 'Close' : 'Add Contact'}
+            onClick={onAddContact}
+        />
+        )}
+        
     </header>
     )
 }

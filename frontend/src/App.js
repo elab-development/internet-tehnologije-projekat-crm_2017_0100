@@ -3,11 +3,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Contacts from './components/Contacts'
-import AddContactLeadComponent from './components/AddContactLeadComponent'
-import AddContact from './components/AddContact'
-import AddLead from './components/AddLead'
 import About from './components/About'
 import Leads from './components/Leads'
+import LeadOnAdd from './components/LeadOnAdd'
+import ContactOnAdd from './components/ContactOnAdd'
 
 const App = () => {
   const [showAddLead, setShowAddLead] = useState(false)
@@ -78,14 +77,21 @@ const App = () => {
 //Add Lead
 
   const AddLead = async (lead) => {
+    console.log(JSON.stringify(lead));
 
       const res = await fetch('http://localhost:8000/api/leads', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(lead),
       })
+      if (!res.ok) {
+        // Obrađivanje grešaka
+        console.error('Error in POST request', res.status);
+        return;
+      }
   
       const data = await res.json()
   
@@ -99,14 +105,21 @@ const App = () => {
 //Add Contact
 
   const AddContact = async (lead) => {
-    
+    console.log(lead)
       const res = await fetch('http://localhost:8000/api/contacts', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(lead),
       })
+
+      if (!res.ok) {
+        // Obrađivanje grešaka
+        console.error('Error in POST request', res.status);
+        return;
+      }
   
       const data = await res.json()
   
@@ -116,26 +129,44 @@ const App = () => {
   // Delete Lead
 
   const deleteLead = async (lead, id) => {
+    try {
       const res = await fetch(`http://localhost:8000/api/leads/${id}`, {
         method: 'DELETE',
-      })
-      //We should control the response status to decide if we will change the state or not.
-      res.status === 200
-        ? setLeads(leads.filter((lead) => lead.id !== id))
-        : alert('Error Deleting This Lead')
+      });
+  
+      if (res.ok) {
+        console.log(`Lead ${id} deleted successfully`);
+        setLeads(leads.filter((lead) => lead.id !== id));
+      } else {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Error deleting lead');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert(`Error Deleting This Lead: ${error.message}`);
+    }
   }
 
   //Delete Contact
 
   const deleteContact = async (lead, id) => {
     
-      const res = await fetch(`http://localhost:8000/api/contacts/${id}`, {
+    try {
+      const res = await fetch(`http://localhost:8000/api/leads/${id}`, {
         method: 'DELETE',
-      })
-      //We should control the response status to decide if we will change the state or not.
-      res.status === 200
-        ? setContacts(contacts.filter((contact) => contact.id !== id))
-        : alert('Error Deleting This Lead')
+      });
+  
+      if (res.ok) {
+        console.log(`Lead ${id} deleted successfully`);
+        setLeads(leads.filter((lead) => lead.id !== id));
+      } else {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Error deleting lead');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert(`Error Deleting This Lead: ${error.message}`);
+    }
   }
 
   // Toggle 
@@ -194,7 +225,7 @@ const App = () => {
       <div className='container'>
         <Header
           onAddLead={() => setShowAddLead(!showAddLead)}
-          onAddContact={() => setShowAddLead(!showAddContact)}
+          onAddContact={() => setShowAddContact(!showAddContact)}
           showAddLead={showAddLead}
           showAddContact={showAddContact}
         />
@@ -203,8 +234,7 @@ const App = () => {
           exact
           render={(props) => (
             <>
-              {showAddLead && <AddLead onAdd={AddLead} />}
-              {showAddContact && <AddContact onAdd={AddContact} />}
+          {showAddContact && <ContactOnAdd onAdd={AddContact} />}
               {contacts.length > 0 ? (
                 <Contacts
                   contacts={contacts}
@@ -222,6 +252,7 @@ const App = () => {
         path='/leads'
         render={(props) => (
           <>
+          {showAddLead && <LeadOnAdd onAdd={AddLead} />}
             {leads.length > 0 ? (
             <Leads
             onDelete={deleteLead}

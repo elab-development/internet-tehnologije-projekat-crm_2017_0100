@@ -18,7 +18,7 @@ return (
         <span>
         <button id='previous-page' className='btn-page' 
         onClick={() => setPage(page -1)} disabled={page === 1}>Previous Page</button> 
-        <p2><strong>Page {page}</strong></p2>
+        <p><strong>Page {page}</strong></p>
         <button id='next-page' className='btn-page' 
         onClick={() => setPage(page + 1)} disabled={endIndex >= leads.length}>Next Page</button>
     </span>

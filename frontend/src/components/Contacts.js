@@ -1,5 +1,6 @@
 import Contact from './Contact'
 import { useLocation } from 'react-router-dom'
+import { useAuth } from './AuthProvider'
 
 const Contacts = ({ contacts, onDelete, onToggle, page, setPage }) => {
     const location = useLocation()
@@ -7,10 +8,12 @@ const Contacts = ({ contacts, onDelete, onToggle, page, setPage }) => {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentContacts = contacts.slice(startIndex, endIndex);
-    
+
+    const { user } = useAuth()
     return (
     <>
     <h2>{location.pathname === '/' ? "Contacts" : "Leads"}</h2>
+        <p>{console.log(user)}</p>
         {currentContacts.map((contact, index) => (
         <Contact key={index} lead={contact} onDelete={onDelete} onToggle={onToggle} />
         ))}

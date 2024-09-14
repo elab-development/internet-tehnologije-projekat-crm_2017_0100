@@ -1,17 +1,21 @@
 import React from 'react'
 import Lead from './Lead'
+import { useAuth } from './AuthProvider';
 
 const Leads = ({ leads, onDelete, onToggle, page, setPage}) => {
     const itemsPerPage = 5;
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentLeads = leads.slice(startIndex, endIndex);
+
+    const { user } = useAuth();
+
 return (
     <div>
         <h2>
             Leads 
         </h2>
-        
+        <h1>{console.log(user)}</h1>
         {currentLeads.map((lead, index) => (
         <Lead key={index} lead={lead}  onDelete={onDelete} onToggle={onToggle}/>
         ))}

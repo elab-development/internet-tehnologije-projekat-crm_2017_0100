@@ -1,6 +1,7 @@
 import { FaTimes } from 'react-icons/fa'
 
 const Contact = ({ lead, onDelete, onToggle }) => {
+
     return (
         <div>
             <div

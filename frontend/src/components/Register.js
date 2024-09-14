@@ -18,6 +18,8 @@ const [formData, setFormData] = useState({
 
     const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
+
     try {
         await register({
         name: `${formData.firstName} ${formData.lastName}`,

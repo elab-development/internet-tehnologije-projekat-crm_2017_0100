@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthProvider';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 const [credentials, setCredentials] = useState({ email: '', password: '' });
 const { login } = useAuth();
-const history = useHistory();
+const navigate = useNavigate();
 
 
 const handleChange = (e) => {
@@ -17,7 +17,7 @@ const handleSubmit = async (e) => {
     try {
     await login(credentials);
     // Redirect to dashboard or show success message
-    history.push('/leads')
+    navigate('/leads')
     } catch (error) {
     console.log("Error occurred in handleSubmit in Login.js"+ error)
     }

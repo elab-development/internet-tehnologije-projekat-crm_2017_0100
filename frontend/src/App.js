@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Contacts from './components/Contacts'
@@ -7,6 +7,10 @@ import About from './components/About'
 import Leads from './components/Leads'
 import LeadOnAdd from './components/LeadOnAdd'
 import ContactOnAdd from './components/ContactOnAdd'
+import { AuthProvider } from './components/AuthProvider'
+import Register from './components/Register'
+import Login from './components/Login'
+import ChangePassword from './components/ChangePassword'
 
 const App = () => {
   const [showAddLead, setShowAddLead] = useState(false)
@@ -87,7 +91,7 @@ const App = () => {
         body: JSON.stringify(lead),
       })
       if (!res.ok) {
-        // Obrađivanje grešaka
+
         console.error('Error in POST request', res.status);
         return;
       }
@@ -150,20 +154,20 @@ const App = () => {
   const deleteContact = async (lead, id) => {
     
     try {
-      const res = await fetch(`http://localhost:8000/api/leads/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/contacts/${id}`, {
         method: 'DELETE',
       });
   
       if (res.ok) {
-        console.log(`Lead ${id} deleted successfully`);
-        setLeads(leads.filter((lead) => lead.id !== id));
+        console.log(`Contact ${id} deleted successfully`);
+        setContacts(contacts.filter((lead) => lead.id !== id));
       } else {
         const errorData = await res.json();
-        throw new Error(errorData.message || 'Error deleting lead');
+        throw new Error(errorData.message || 'Error deleting contact');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert(`Error Deleting This Lead: ${error.message}`);
+      alert(`Error Deleting This Contact: ${error.message}`);
     }
   }
 
@@ -220,6 +224,7 @@ const App = () => {
   return (
     
     <Router>
+      <AuthProvider>
       <div className='container'>
         <Header
           onAddLead={() => setShowAddLead(!showAddLead)}
@@ -227,28 +232,31 @@ const App = () => {
           showAddLead={showAddLead}
           showAddContact={showAddContact}
         />
+        <Routes>
         <Route
           path='/'
-          exact
-          render={(props) => (
-            <>
-          {showAddContact && <ContactOnAdd onAdd={AddContact} />}
+          element={
+              <>
+              {showAddContact && <ContactOnAdd onAdd={AddContact} />}
               {contacts.length > 0 ? (
-                <Contacts
-                  contacts={contacts}
-                  onDelete={deleteContact}
-                  onToggle={toggleCheckLead}
-                  page={page}
-                  setPage={setPage}
+              <Contacts
+                contacts={contacts}
+                onDelete={deleteContact}
+                onToggle={toggleCheckLead}
+                page={page}
+                setPage={setPage}
                 />
-              ) : ('')}
-            </>
-          )}
-        />
-        <Route path='/about' component={About} />
+                  ) : ('')}
+              </>
+              }
+            />
+        <Route path='/about' element={<About/>} />
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/login' element={<Login />} />
+        <Route path='/user/password' element={<ChangePassword/>}/>
         <Route 
         path='/leads'
-        render={(props) => (
+        element={
           <>
           {showAddLead && <LeadOnAdd onAdd={AddLead} />}
             {leads.length > 0 ? (
@@ -262,13 +270,17 @@ const App = () => {
           ) : ('')}
         
           </>
-        )}
+        }
+        
         />
+        </Routes>
         <Footer />
         
         
       </div>
+      </AuthProvider>
     </Router>
+  
   )
 }
 

@@ -15,7 +15,10 @@ const LeadOnAdd = ({onAdd}) => {
     if (!name) {
         alert('Please add a name for a lead')
         return
+    } else if(status !== 'new' && status !== 'contacted' && status !== 'qualified' && status !== 'closed'){
+        alert("status mora biti jedno od ovih reci: new, contacted, qualified, closed")
     }
+    
 
     onAdd({ name, email, phone, company, status, source })
 
@@ -74,7 +77,7 @@ return (
         />
         </div>
         <div className='form-control'>
-        <label>Add a company name</label>
+        <label>Add a source</label>
         <input
             type='text'
             placeholder='Add source'

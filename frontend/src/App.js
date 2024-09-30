@@ -18,17 +18,25 @@ const App = () => {
   const [leads, setLeads] = useState([])
   const [contacts, setContacts] = useState([])
   const [page, setPage] = useState(1)
+  const [user, setUser] = useState(null)
+  const [searchCriteria, setSearchCriteria] = useState('name')
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     const getLeads = async () => {
       const leadsFromServer = await fetchLeads()
-      setLeads(leadsFromServer)
+        setLeads(leadsFromServer)
     }
 
     const getContacts = async () => {
         const contactsFromServer = await fetchContacts()
         setContacts(contactsFromServer); 
       }
+
+      const storedUser = localStorage.getItem('user');
+      
+      setUser(JSON.parse(storedUser));
+    
 
     getContacts()
     getLeads()
@@ -81,24 +89,34 @@ const App = () => {
 //Add Lead
 
   const AddLead = async (lead) => {
-
-      const res = await fetch('http://localhost:8000/api/leads', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(lead),
-      })
-      if (!res.ok) {
-
-        console.error('Error in POST request', res.status);
-        return;
+      if(user === null){
+        alert("Moras biti ulogovan da bi izvrsio ovu akciju")
+        return
       }
+      if(user.tip == 'Administrator' || user.tip == 'Autentifikovan korisnik'){
+        const res = await fetch('http://localhost:8000/api/leads', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(lead),
+        })
+        if (!res.ok) {
   
-      const data = await res.json()
-  
-      setLeads([...leads, data])
+          console.error('Error in POST request', res.status);
+          return;
+        }
+    
+        const data = await res.json()
+    
+        setLeads([...leads, data])
+      } else{
+        alert("Moras biti administrator ili Autentifikovan korisnik da bi izvrsio ovu naredbu")
+      }
+      
+    
+      
 
     // const id = Math.floor(Math.random() * 10000) + 1
     // const newLead = { id, ...lead }
@@ -108,6 +126,11 @@ const App = () => {
 //Add Contact
 
   const AddContact = async (lead) => {
+    if(user === null){
+      alert("Moras biti ulogovan da bi izvrsio ovu akciju")
+      return
+    }
+    if(user.tip === 'Administrator' || user.tip === 'Autentifikovan korisnik'){
       const res = await fetch('http://localhost:8000/api/contacts', {
         method: 'POST',
         headers: {
@@ -126,49 +149,72 @@ const App = () => {
       const data = await res.json()
   
       setContacts([...contacts, data])
+    } else{
+      alert("Moras biti administrator ili Autentifikovan korisnik da bi izvrsio ovu naredbu")
+    }
+      
   }
 
   // Delete Lead
 
   const deleteLead = async (lead, id) => {
-    try {
-      const res = await fetch(`http://localhost:8000/api/leads/${id}`, {
-        method: 'DELETE',
-      });
-  
-      if (res.ok) {
-        console.log(`Lead ${id} deleted successfully`);
-        setLeads(leads.filter((lead) => lead.id !== id));
-      } else {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Error deleting lead');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert(`Error Deleting This Lead: ${error.message}`);
+    if(user === null){
+      alert("Moras biti ulogovan da bi izvrsio ovu akciju")
+      return
     }
+    console.log(user.tip)
+    if(user.tip === 'Administrator'){
+      try {
+        const res = await fetch(`http://localhost:8000/api/leads/${id}`, {
+          method: 'DELETE',
+        });
+    
+        if (res.ok) {
+          console.log(`Lead ${id} deleted successfully`);
+          setLeads(leads.filter((lead) => lead.id !== id));
+        } else {
+          const errorData = await res.json();
+          throw new Error(errorData.message || 'Error deleting lead');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`Error Deleting This Lead: ${error.message}`);
+      }
+    } else{
+      alert("Moras biti administrator da bi izvrsio ovu naredbu")
+    }
+    
   }
 
   //Delete Contact
 
   const deleteContact = async (lead, id) => {
-    
-    try {
-      const res = await fetch(`http://localhost:8000/api/contacts/${id}`, {
-        method: 'DELETE',
-      });
-  
-      if (res.ok) {
-        console.log(`Contact ${id} deleted successfully`);
-        setContacts(contacts.filter((lead) => lead.id !== id));
-      } else {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Error deleting contact');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert(`Error Deleting This Contact: ${error.message}`);
+    if(user === null){
+      alert("Moras biti ulogovan da bi izvrsio ovu akciju")
+      return
     }
+    console.log(user.tip)
+    if(user.tip === 'Administrator'){
+      try {
+        const res = await fetch(`http://localhost:8000/api/contacts/${id}`, {
+          method: 'DELETE',
+        });
+    
+        if (res.ok) {
+          console.log(`Contact ${id} deleted successfully`);
+          setContacts(contacts.filter((lead) => lead.id !== id));
+        } else {
+          const errorData = await res.json();
+          throw new Error(errorData.message || 'Error deleting contact');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`Error Deleting This Contact: ${error.message}`);
+      }
+    } else{
+      alert("Moras biti administrator da bi izvrsio ovu naredbu")
+    }
+  
   }
 
   // Toggle 
@@ -221,6 +267,17 @@ const App = () => {
     
   }
 
+  const onChange = async () => {
+    const searchTextLower = searchText.toLowerCase()
+    const filteredLeads = leads.filter((lead)=>lead[searchCriteria].toLowerCase().startsWith(searchTextLower))
+    if(filteredLeads.length > 0){
+      setLeads(filteredLeads)
+    } else{
+      alert("Ne postoji takav lead")
+    }
+    
+  }
+
   return (
     
     <Router>
@@ -261,6 +318,11 @@ const App = () => {
           {showAddLead && <LeadOnAdd onAdd={AddLead} />}
             {leads.length > 0 ? (
             <Leads
+            onChange={onChange}
+            searchCriteria={searchCriteria}
+            searchText={searchText}
+            setSearchCriteria={setSearchCriteria}
+            setSearchText={setSearchText}
             onDelete={deleteLead}
             onToggle={toggleCheckLead}
               leads={leads}

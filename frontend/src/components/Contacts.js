@@ -13,7 +13,7 @@ const Contacts = ({ contacts, onDelete, onToggle, page, setPage }) => {
     return (
     <>
     <h2>{location.pathname === '/' ? "Contacts" : "Leads"}</h2>
-        <p>{console.log(user)}</p>
+
         {currentContacts.map((contact, index) => (
         <Contact key={index} lead={contact} onDelete={onDelete} onToggle={onToggle} />
         ))}

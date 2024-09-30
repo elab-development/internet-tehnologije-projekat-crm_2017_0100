@@ -4,10 +4,9 @@ import Button from './Button'
 import Navbar from './Navbar'
 import { useAuth } from './AuthProvider'
 
-const Header = ({ title, onAddLead, onAddContact, showAddLead, showAddContact }) => {
+const Header = ({ title, onAddLead, onAddContact, showAddLead, showAddContact}) => {
     const location = useLocation()
     const {user, logout} = useAuth();
-
     return (
     <header className='header'>
         <h1>GoLeads</h1>
@@ -29,7 +28,8 @@ const Header = ({ title, onAddLead, onAddContact, showAddLead, showAddContact })
         {user && <Button
             text="Log out"
             onClick={logout}
-        />}        
+        />}   
+        {user ? user.tip : ''} 
     </header>
     )
 }

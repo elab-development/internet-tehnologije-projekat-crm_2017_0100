@@ -39,10 +39,15 @@ try {
 const login = async (credentials) => {
 try {
     const response = await axios.post('http://localhost:8000/api/login', credentials);
+
     setUser(response.data.user);
+    
     localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', JSON.stringify(response.data.user));
+    
     axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
     console.log(response.data.user)
+    
     return response.data;
 } catch (error) {
     console.error('Login error', error.response.data);
@@ -55,6 +60,7 @@ try {
     await axios.post('http://localhost:8000/api/logout');
     setUser(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user')
     delete axios.defaults.headers.common['Authorization'];
     alert("Logged out successfully")
 } catch (error) {

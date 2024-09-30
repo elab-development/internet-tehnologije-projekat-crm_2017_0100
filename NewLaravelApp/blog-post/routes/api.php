@@ -50,4 +50,5 @@ Route::middleware('auth:sanctum')->patch('/user/password', [AuthController::clas
 
 Route::middleware('auth:sanctum')->group(function () {
   //  Route::apiResource('leads', LeadController::class);
+  Route::get('interactions', [InteractionController::class, 'index']);
 });

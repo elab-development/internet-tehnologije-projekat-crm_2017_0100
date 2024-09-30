@@ -12,6 +12,7 @@ const Navbar = () => {
     <Link to='/about' className="nav-item">About</Link>
     {user ? user.email : <Link to='/register' className="nav-item">Register</Link>} 
     {user && <Link to='/user/password' className="nav-item">Change Password</Link>}
+    
     </div>
 
     )

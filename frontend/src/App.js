@@ -89,6 +89,12 @@ const App = () => {
 //Add Lead
 
   const AddLead = async (lead) => {
+    const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+    if (!csrfTokenElement) {
+        console.error("CSRF token is not found");
+        return;
+    }
+    const csrfToken = csrfTokenElement.getAttribute('content');
       if(user === null){
         alert("Moras biti ulogovan da bi izvrsio ovu akciju")
         return
@@ -97,6 +103,7 @@ const App = () => {
         const res = await fetch('http://localhost:8000/api/leads', {
           method: 'POST',
           headers: {
+            'X-CSRF-TOKEN': csrfToken,
             'Content-type': 'application/json',
             'Accept': 'application/json',
           },
@@ -126,6 +133,12 @@ const App = () => {
 //Add Contact
 
   const AddContact = async (lead) => {
+    const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+    if (!csrfTokenElement) {
+        console.error("CSRF token is not found");
+        return;
+    }
+    const csrfToken = csrfTokenElement.getAttribute('content');
     if(user === null){
       alert("Moras biti ulogovan da bi izvrsio ovu akciju")
       return
@@ -134,6 +147,7 @@ const App = () => {
       const res = await fetch('http://localhost:8000/api/contacts', {
         method: 'POST',
         headers: {
+          'X-CSRF-TOKEN': csrfToken,
           'Content-type': 'application/json',
           'Accept': 'application/json',
         },

@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('leads', LeadController::class);
+
+Route::get('/leads/full-data', [LeadController::class, 'getFullLeadData']);
     
 Route::get('contacts', [ContactController::class, 'index']);
 Route::post('contacts', [ContactController::class, 'store']);

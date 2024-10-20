@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,12 @@ Route::get('/', function () {
 
 Route::get('/greeting', function () {
     return 'Hello World';
+});
+
+Route::get('/csrf-token', function () {
+    return response()->json(['csrfToken' => csrf_token()]);
+});
+
+Route::get('/get-csrf-token', function (Request $request) {
+    return response()->json(['csrfToken' => $request->session()->token()]);
 });
